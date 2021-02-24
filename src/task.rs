@@ -9,6 +9,8 @@ use std::sync::{Mutex, Arc};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::thread;
 use std::time::Duration;
+use rand::Rng;
+
 use crate::invoke::Invoke;
 use crate::cycles;
 use crate::ext;
@@ -171,6 +173,13 @@ impl Task for Container {
     }
 
     fn finish(&self) {
-        self.inv.tx.lock().unwrap().send(String::from("success"));
+        let mut rng =rand::thread_rng();
+        let n = rng.gen_range(0, 100);
+        if n % 3 == 0 {
+            self.inv.tx.lock().unwrap().send(String::from("pushback"));
+        } else {
+            self.inv.tx.lock().unwrap().send(String::from("success"));
+        }
+
     }
 }

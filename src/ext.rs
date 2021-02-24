@@ -42,8 +42,6 @@ pub fn init(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
 }
 
 pub fn khop(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
-// pub fn init() -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
-//     print_hello();
     println!("{}", "enter");
     // let ctx = tctx.clone();
     // let tx = ctx.lock();
@@ -59,7 +57,6 @@ pub fn khop(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
             p.lock().unwrap().get("A");
             j = j + 1;
         }
-
         1111
     })
 }
