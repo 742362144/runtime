@@ -90,13 +90,24 @@ pub struct Container {
 
 impl Container {
     pub fn new(inv: Box<Invoke>, policy: Arc<Mutex<Policy>>) -> Container {
-        let gen = ext::init(policy);
-        Container {
+        let gen = ext::init(policy.clone());
+        let mut req = inv.req.clone();
+        let mut con = Container {
             state: TaskState::INITIALIZED,
             time: 0,
             inv,
             gen: Some(gen),
+        };
+        println!("{}", req.as_str());
+        if req.as_str() == "khop" {
+            con.gen = Some(ext::khop(policy.clone()));
+        } else if req.as_str() == "md5" {
+            con.gen = Some(ext::md5(policy.clone()));
+        } else if req.as_str() == "aes" {
+            con.gen = Some(ext::aes(policy.clone()));
         }
+
+        con
     }
 
     // pub fn new(inv: Box<Invoke>, gen: Option<Pin<Box<dyn Generator<Yield = u64, Return = u64>>>>) -> Container {

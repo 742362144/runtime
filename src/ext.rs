@@ -15,13 +15,19 @@ use rustlearn::datasets::iris;
 use rustlearn::cross_validation::CrossValidation;
 use rustlearn::linear_models::sgdclassifier::Hyperparameters;
 use rustlearn::metrics::accuracy_score;
+use md5::compute;
+
+extern crate hex;
+use openssl::aes::{AesKey, KeyError, aes_ige};
+use openssl::symm::Mode;
+use hex::{FromHex, ToHex};
 
 use crate::policy::Policy;
 
 pub fn init(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
 // pub fn init() -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
 //     print_hello();
-    println!("{}", "enter");
+//     println!("{}", "enter");
     // let ctx = tctx.clone();
     // let tx = ctx.lock();
 
@@ -42,24 +48,71 @@ pub fn init(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
 }
 
 pub fn khop(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
-    println!("{}", "enter");
+    // println!("{}", "enter");
     // let ctx = tctx.clone();
     // let tx = ctx.lock();
 
-    println!("{}", "gen init");
+    println!("{}", "gen khop");
     let mut p = policy.clone();
     Box::pin(move || {
         let i:u64 = 1;
         p.lock().unwrap().set("A", "111");
         yield i;
         let mut j = 0;
-        while j < 100 {
+        while j < 50 {
             p.lock().unwrap().get("A");
             j = j + 1;
         }
         1111
     })
 }
+
+pub fn md5(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
+    // println!("{}", "enter");
+    // let ctx = tctx.clone();
+    // let tx = ctx.lock();
+
+    println!("{}", "gen md5");
+    let mut p = policy.clone();
+    Box::pin(move || {
+        let i:u64 = 1;
+        p.lock().unwrap().set("A", "111");
+        yield i;
+        let mut j = 0;
+        while j < 50 {
+            p.lock().unwrap().get("A");
+            let digest = compute(b"abcdefghijklmnopqrstuvwxyz");
+            j = j + 1;
+        }
+        1111
+    })
+}
+
+pub fn aes(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
+    // println!("{}", "enter");
+    // let ctx = tctx.clone();
+    // let tx = ctx.lock();
+
+    println!("{}", "gen aes");
+    let mut p = policy.clone();
+    Box::pin(move || {
+        let i:u64 = 1;
+        let raw_key = "000102030405060708090A0B0C0D0E0F";
+        let hex_cipher = "12345678901234561234567890123456";
+        let randomness = "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F";
+        yield i;
+
+        if let (Ok(key_as_u8), Ok(cipher_as_u8), Ok(mut iv_as_u8)) =
+        (Vec::from_hex(raw_key), Vec::from_hex(hex_cipher), Vec::from_hex(randomness)) {
+            let key = AesKey::new_encrypt(&key_as_u8)?;
+            let mut output = vec![0u8; cipher_as_u8.len()];
+            aes_ige(&cipher_as_u8, &mut output, &key, &mut iv_as_u8, Mode::Encrypt);
+            // assert_eq!(output.to_hex(), "a6ad974d5cea1d36d2f367980907ed32");
+        }
+        1111
+    })
+}
+
 
 // pub fn rg(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u64> + 'static>> {
 //     let mut p = policy.clone();
