@@ -103,8 +103,6 @@ impl Container {
             con.gen = Some(ext::khop(policy.clone()));
         } else if req.as_str() == "md5" {
             con.gen = Some(ext::md5(policy.clone()));
-        } else if req.as_str() == "aes" {
-            con.gen = Some(ext::aes(policy.clone()));
         }
 
         con
