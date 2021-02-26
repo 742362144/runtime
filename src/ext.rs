@@ -38,7 +38,7 @@ pub fn init(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
         p.lock().unwrap().set("A", "111");
         yield i;
         let mut j = 0;
-        while j < 100 {
+        while j < 20 {
             p.lock().unwrap().get("A");
             j = j + 1;
         }
@@ -59,7 +59,7 @@ pub fn khop(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
         p.lock().unwrap().set("A", "111");
         yield i;
         let mut j = 0;
-        while j < 50 {
+        while j < 20 {
             p.lock().unwrap().get("A");
             j = j + 1;
         }
@@ -79,7 +79,7 @@ pub fn md5(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u6
         p.lock().unwrap().set("A", "111");
         yield i;
         let mut j = 0;
-        while j < 50 {
+        while j < 20 {
             p.lock().unwrap().get("A");
             let digest = compute(b"abcdefghijklmnopqrstuvwxyz");
             j = j + 1;
