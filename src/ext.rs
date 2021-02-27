@@ -76,14 +76,10 @@ pub fn md5(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u6
     let mut p = policy.clone();
     Box::pin(move || {
         let i:u64 = 1;
-        p.lock().unwrap().set("A", "111");
+        let s = p.lock().unwrap().get("md5");
         yield i;
         let mut j = 0;
-        while j < 20 {
-            p.lock().unwrap().get("A");
-            let digest = compute(b"abcdefghijklmnopqrstuvwxyz");
-            j = j + 1;
-        }
+        let digest = compute(s.as_bytes());
         1111
     })
 }
