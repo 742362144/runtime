@@ -185,8 +185,10 @@ impl Task for Container {
         let mut rng =rand::thread_rng();
         let n = rng.gen_range(0, 100);
         if n % 3 == 0 {
+            println!("RESPONSE={:?}", "pushback");
             self.inv.tx.lock().unwrap().send(String::from("pushback"));
         } else {
+            println!("RESPONSE={:?}", "success");
             self.inv.tx.lock().unwrap().send(String::from("success"));
         }
 

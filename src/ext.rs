@@ -52,15 +52,15 @@ pub fn khop(policy: Arc<Mutex<Policy>>) -> Pin<Box<Generator<Yield=u64, Return=u
     // let ctx = tctx.clone();
     // let tx = ctx.lock();
 
-    println!("{}", "gen khop");
     let mut p = policy.clone();
     Box::pin(move || {
         let i:u64 = 1;
         p.lock().unwrap().set("A", "111");
         yield i;
         let mut j = 0;
-        while j < 20 {
-            p.lock().unwrap().get("A");
+        let mut pl = p.lock().unwrap();
+        while j < 10 {
+            pl.get("A");
             j = j + 1;
         }
         1111

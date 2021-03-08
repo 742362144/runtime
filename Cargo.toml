@@ -20,6 +20,7 @@ systemstat = "0.1.6"
 rustlearn = "0.5.0"
 rand = "0.3.17"
 md5 = "0.7.0"
+self-meter = "0.6.0"
 #openssl = "0.10.32"
 
 #[dependencies.redis-module]

@@ -5,27 +5,8 @@ use std::time::Duration;
 use systemstat::{System, Platform, saturating_sub_bytes};
 
 fn main() {
+    // https://github.com/unrelentingtech/systemstathttps://github.com/unrelentingtech/systemstat
     let sys = System::new();
-
-    match sys.mounts() {
-        Ok(mounts) => {
-            println!("\nMounts:");
-            for mount in mounts.iter() {
-                println!("{} ---{}---> {} (available {} of {})",
-                         mount.fs_mounted_from, mount.fs_type, mount.fs_mounted_on, mount.avail, mount.total);
-            }
-        }
-        Err(x) => println!("\nMounts: error: {}", x)
-    }
-
-    match sys.block_device_statistics() {
-        Ok(stats) => {
-            for blkstats in stats.values() {
-                println!("{}: {:?}", blkstats.name, blkstats);
-            }
-        }
-        Err(x) => println!("\nBlock statistics error: {}", x.to_string())
-    }
 
     match sys.networks() {
         Ok(netifs) => {
